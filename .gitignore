@@ -1,0 +1,61 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Logs
+*.log
+logs/
+
+# Project specific
+uploads/*
+!uploads/.gitkeep
+vector_store/*
+!vector_store/.gitkeep
+models/*
+!models/.gitkeep
+.env
+*.index
+*.chunks
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
