@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import logging
 import os
@@ -23,6 +24,8 @@ app = FastAPI(
     description="Retrieval Augmented Generation Chatbot",
     version="1.0.0"
 )
+static_dir = Path(__file__).parent / "static"
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Global variables for components
 embedder: Optional[HuggingFaceEmbedder] = None
@@ -100,7 +103,7 @@ async def startup_event():
         # Initialize LLM (this may take time on first load)
         logger.info("Loading LLM model (this may take a moment)...")
         llm = HuggingFaceLLM(
-            model_name="TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+            model_name="distilgpt2"
         )
         
         logger.info("RAG components initialized successfully")
@@ -127,6 +130,12 @@ async def shutdown_event():
 
 @app.get("/")
 async def root():
+    """Serve the web application."""
+    return FileResponse(static_dir / "index.html")
+
+
+@app.get("/api")
+async def api_info():
     """Root endpoint."""
     return {
         "message": "RAG Chatbot API",

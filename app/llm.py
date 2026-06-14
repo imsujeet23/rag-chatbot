@@ -10,7 +10,7 @@ class HuggingFaceLLM:
     
     def __init__(
         self,
-        model_name: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        model_name: str = "distilgpt2",
         device: str = "auto"
     ):
         """
@@ -38,7 +38,8 @@ class HuggingFaceLLM:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name,
                 torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-                device_map="auto" if self.device == "cuda" else None
+                device_map="auto" if self.device == "cuda" else None,
+                low_cpu_mem_usage=(self.device == "cpu")
             )
             
             if self.device == "cpu":

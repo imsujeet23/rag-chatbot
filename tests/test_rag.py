@@ -3,6 +3,7 @@ Test suite for RAG Chatbot components.
 Run with: python -m pytest tests/
 """
 
+import inspect
 import pytest
 import numpy as np
 from pathlib import Path
@@ -12,6 +13,7 @@ import os
 # Import RAG components
 from app.chunker import DocumentChunker
 from app.embedder import HuggingFaceEmbedder
+from app.llm import HuggingFaceLLM
 from app.retreiver import FAISSRetriever
 
 
@@ -109,6 +111,16 @@ class TestHuggingFaceEmbedder:
         dim = embedder.get_embedding_dimension()
         assert isinstance(dim, int)
         assert dim > 0
+
+
+class TestHuggingFaceLLM:
+    """Tests for LLM startup configuration."""
+
+    def test_default_model_is_lightweight(self):
+        """The default model should be small enough to run in this environment."""
+        default_model = inspect.signature(HuggingFaceLLM.__init__).parameters["model_name"].default
+
+        assert default_model == "distilgpt2"
 
 
 class TestFAISSRetriever:
